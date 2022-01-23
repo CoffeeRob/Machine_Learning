@@ -5,13 +5,11 @@ from torch.utils.data import random_split,DataLoader
 import torchvision
 from torchvision import datasets,transforms
 from torch import argmax
-from torch import argmin
 from torch import IntTensor
-import numpy as np
 
-sup_classification=1
-unsup_control=2
-unsup_classification=3
+SUP_CLASSIFICATION=1
+UNSUP_CONTROL=2
+UNSUP_CLASSIFICATION=3
 
 class Autoencoder(nn.Module):
     def __init__(self, encoder, latent_size):
@@ -145,15 +143,15 @@ def experiment(instruction):
     autoencoder_optimiser = optim.Adam(autoencoder.parameters(),lr=1e-3)
     nb_epochs_classifier = 10
 
-    if instruction == 1:
+    if instruction == SUP_CLASSIFICATION:
         nb_epochs_autoencoder = 0
         classifier_optimiser = optim.Adam(classifier.parameters(),lr=1e-3)
 
-    elif instruction == 2:
+    elif instruction == UNSUP_CONTROL:
         nb_epochs_autoencoder = 0
         classifier_optimiser = optim.Adam(classifier.fc.parameters(),lr=1e-3)
 
-    elif instruction == 3:
+    elif instruction == UNSUP_CLASSIFICATION:
         nb_epochs_autoencoder = 10
         classifier_optimiser = optim.Adam(classifier.fc.parameters(),lr=1e-3)
 
@@ -197,9 +195,9 @@ def experiment(instruction):
     return 'Completed'
 
 def main():
-    print(experiment(sup_classification),'supervised classification')
-    print(experiment(unsup_control),'control for unsupervised')
-    print(experiment(unsup_classification),'unsupervised classification')
+    print(experiment(SUP_CLASSIFICATION),'supervised classification')
+    print(experiment(UNSUP_CONTROL),'control for unsupervised')
+    print(experiment(UNSUP_CLASSIFICATION),'unsupervised classification')
 
 
 if __name__=="__main__":
